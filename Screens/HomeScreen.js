@@ -21,6 +21,12 @@ export default class HomeScreen extends Component {
                 <Image style={styles.image} source={require('../assets/star_map.png')}></Image>
                 <Text style={{color:'white'}}>Star Map</Text>
                 </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonStyle} onPress={()=>{
+                    this.props.navigation.navigate('DailyPic')
+                }}>
+                <Image style={styles.image} source={require('../assets/daily_pictures.png')}></Image>
+                <Text style={{color:'white'}}>Daily Pic</Text>
+                </TouchableOpacity>
                 </ImageBackground> 
             </View>
         )
