@@ -1,7 +1,8 @@
 import React, { Component, useState, useEffect} from 'react';
-import { Text, View ,Alert,Image,StyleSheet} from 'react-native';
+import { Text, View ,Alert,Image,StyleSheet,ImageBackground} from 'react-native';
 import axios from 'axios'
 import DateTimePicker from '@react-native-community/datetimepicker';
+import * as Font from 'expo-font'
 
 export default class DailyPicScreen extends Component {
 
@@ -14,12 +15,25 @@ export default class DailyPicScreen extends Component {
             date: new Date(),
             textDate: '',
             picked: false,
+            fontsLoaded:false
         }
 
     }
+    async loadFonts() {
+        await Font.loadAsync({
+          'Bungee-Spice': require('../assets/fonts/BungeeSpice-Regular.ttf'),
+          'Future-Now': require('../assets/fonts/FutureNowRegular-25Bl.ttf'),
+          'Bricolage': require('../assets/fonts/BricolageGrotesque.ttf'),
+          'Roboto-Con': require('../assets/fonts/RobotoCondensed.ttf')
+        });
+        this.setState({ fontsLoaded: true });
+      }
+    
 
     componentDidMount(){
+        this.loadFonts();
         this.getData()
+        
     }
 
     
@@ -74,29 +88,30 @@ export default class DailyPicScreen extends Component {
             
 
                 <View>
+                    <ImageBackground source={require('../assets/space.jpeg')}>
                     <DateTimePicker mode='default' display='default' value={this.state.date} onChange={(date)=>{this.updateDate(date)}}/>
-                    <Text style={styles.date}>{this.state.textDate}</Text>
-                    <Text style={styles.title}>{this.state.storage.title}</Text>
-                    <Text>{this.state.storage.explanation}</Text>
-                    <Image style={{width:'80%', resizeMode:'contain',height:'60%'}} source={{uri: this.state.storage.hdurl}}></Image>
-               
+                    
+                    </ImageBackground>
+                    
                 
                 </View>
             )
         }else {
+            if(this.state.fontsLoaded){
             return (
             
 
                 <View>
-                    
+                    <ImageBackground style={{}} source={require('../assets/space.jpeg')}>
                     <Text style={styles.date}>{this.state.textDate}</Text>
                     <Text style={styles.title}>{this.state.storage.title}</Text>
                     <Text style={styles.explanation}>{this.state.storage.explanation}</Text>
                     <Image style={{alignSelf:'center',width:'90%', resizeMode:'contain',height:'40%'}} source={{uri: this.state.storage.hdurl}}></Image>
-               
+                     </ImageBackground>
                 
                 </View>
             )
+            }
         }
 
         
@@ -108,17 +123,22 @@ export default class DailyPicScreen extends Component {
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 20,
+        fontSize: 25,
         paddingLeft:20,
         marginTop:20,
-        fontWeight: 'bold'
+        fontFamily:'Bungee-Spice',
+        color:'white'
     },
     date:{
         alignSelf: 'center',
-        fontSize:20,
-        fontWeight: 300
+        fontSize:30,
+        fontWeight: 300,
+        fontFamily: 'Bricolage',
+        color:'white'
     },
     explanation:{
-        padding: 20
+        padding: 20,
+        fontFamily: 'Roboto-Con',
+        color:'white'
     }
 })

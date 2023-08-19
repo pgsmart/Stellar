@@ -1,35 +1,58 @@
 import React,{Component} from 'react';
 import { Text, View,StyleSheet ,TouchableOpacity,ImageBackground,StatusBar,Platform,Image} from 'react-native';
+import * as Font from 'expo-font';
+
 export default class HomeScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            fontsLoaded: false
+        }
+      }
+    
+      async loadFonts() {
+        await Font.loadAsync({
+          'Bungee-Spice': require('../assets/fonts/BungeeSpice-Regular.ttf'),
+          'Future-Now': require('../assets/fonts/FutureNowRegular-25Bl.ttf'),
+          'Bricolage': require('../assets/fonts/BricolageGrotesque.ttf')
+        });
+        this.setState({ fontsLoaded: true });
+      }
+    
+      componentDidMount() {
+        this.loadFonts();
+      }
+
     render() {
        
-
+        if(this.state.fontsLoaded){
         return (
             <View style={styles.container}>
                   <ImageBackground style={styles.bgImage} source={require('../assets/space.gif')}>        
-                <Text style={{color:'white',alignSelf:'center',fontSize:30,
-            marginTop: Platform.OS == 'android' ? StatusBar.height : 0}}>Stellar App</Text>
+                <Text style={{fontFamily:'Future-Now',color:'white',alignSelf:'center',fontSize:60,
+            marginTop: 20, marginBottom:30}}>Stellar App</Text>
                 <TouchableOpacity style={styles.buttonStyle} onPress={()=>{
                     this.props.navigation.navigate('SpaceCrafts')
                 }}>
                 <Image style={styles.image} source={require('../assets/space_crafts.png')}></Image>
-                <Text style={{color:'white'}}>Space Crafts Location</Text>
+                <Text style={{color:'white',fontFamily:'Bricolage',fontSize:30,}}>Space Crafts Location</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonStyle} onPress={()=>{
                     this.props.navigation.navigate('StarMap')
                 }}>
                 <Image style={styles.image} source={require('../assets/star_map.png')}></Image>
-                <Text style={{color:'white'}}>Star Map</Text>
+                <Text style={{color:'white',fontFamily:'Bricolage',fontSize:30,}}>Star Map</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonStyle} onPress={()=>{
                     this.props.navigation.navigate('DailyPic')
                 }}>
                 <Image style={styles.image} source={require('../assets/daily_pictures.png')}></Image>
-                <Text style={{color:'white'}}>Daily Pic</Text>
+                <Text style={{color:'white',fontFamily:'Bricolage',fontSize:30,}}>Daily Pic</Text>
                 </TouchableOpacity>
                 </ImageBackground> 
             </View>
         )
+         }
     }
 }
 
@@ -41,16 +64,15 @@ const styles = StyleSheet.create({
     },
     buttonStyle: {
         borderRadius: 25,
-        borderWidth: 1,
-        width: '50%',
-        height: 30,
-        alignItems: "flex-start",
+        borderWidth: 4,
+        width: '80%',
         borderColor: 'white',
-        flex: 0.1,
-        alignSelf:'center',
-        justifyContent: 'center',
-        flexDirection:'row-reverse'
-    
+        flex: 0.14,  
+        flexDirection:'row-reverse',
+        margin: 30,
+        display: 'flex' ,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     bgImage:{
         resizeMode: 'cover',
@@ -59,7 +81,14 @@ const styles = StyleSheet.create({
     },
     image:{
         resizeMode:'contain',
-        width:'30%',
-        height:'70%'
+        width:'20%',
+        height:'90%',
+        marginLeft:10
+    },
+    title:{
+
+    },
+    buttonText:{
+        
     }
 })
